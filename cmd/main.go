@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"os"
 
 	"github.com/joho/godotenv"
@@ -26,7 +27,7 @@ func main() {
 	logger.Infof("Connecting to redis on port:%s", os.Getenv("REDIS_PORT"))
 	rdb, err := driver.NewRedisDB(
 		driver.ConfigRedis{
-			Port:     "localhost:" + os.Getenv("REDIS_PORT"),
+			Port:     fmt.Sprintf("%s:%s", os.Getenv("REDIS_NAME"), os.Getenv("REDIS_PORT")),
 			Password: os.Getenv("REDIS_PASSWORD"),
 			DB:       0,
 		},
@@ -46,7 +47,7 @@ func main() {
 	go s.RunGatewayServer(os.Getenv("GATE_PORT"), h.InitRoutes())
 
 	logger.Infof("Starting grpc server on port: %s", os.Getenv("GRPC_PORT"))
-	if err := s.RunGRPCServer(os.Getenv("GRPC_PORT")); err != nil {
+	if err = s.RunGRPCServer(os.Getenv("GRPC_PORT")); err != nil {
 		logger.Fatalf("Error due start the grpc server: %s", err.Error())
 	}
 }

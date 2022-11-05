@@ -1,0 +1,38 @@
+version: "3.8"
+
+services:
+  app:
+    build: .
+    container_name: "config-sb"
+    environment:
+      - REDIS_NAME=redis-sb
+      - REDIS_PORT=6379
+      - REDIS_PASSWORD=qwerty
+    tty: true
+    restart: on-failure
+    ports:
+      - "8080:80"
+    depends_on:
+      - redis-sb
+    networks:
+      - backend
+    volumes:
+      - .:/app
+
+  redis-sb:
+    image: redis:latest
+    container_name: "redis-sb"
+    ports:
+      - "6001:6379"
+    expose:
+      - "6001"
+    environment:
+      - REDIS_DB_NAME=redis-sb
+      - REDIS_DB_PORT=6379
+      - REDIS_DB_PASSWORD=qwerty
+    networks:
+      - backend
+
+networks:
+  backend:
+    driver: bridge
