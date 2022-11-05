@@ -27,7 +27,8 @@ func main() {
 	logger.Infof("Connecting to redis on port:%s", os.Getenv("REDIS_PORT"))
 	rdb, err := driver.NewRedisDB(
 		driver.ConfigRedis{
-			Port:     fmt.Sprintf("%s:%s", os.Getenv("REDIS_NAME"), os.Getenv("REDIS_PORT")),
+			// if you start with docker-compose, change from localhost to Getenv
+			Port:     fmt.Sprintf("%s:%s" /*os.Getenv("REDIS_NAME")*/, "localhost", os.Getenv("REDIS_PORT")),
 			Password: os.Getenv("REDIS_PASSWORD"),
 			DB:       0,
 		},

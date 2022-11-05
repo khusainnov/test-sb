@@ -12,11 +12,17 @@ gen:
 clean:
 	rm -f ./pb/*.pb.go
 
+up:
+	docker compose --build
+
 d-up:
 	docker run --name=redis-sb -p 6379:6379 -d --rm redis
 
 d-stop:
 	docker stop redis-sb
 
-d-exec:
+app-exec:
+	docker exec -it config-sb /bin/bash
+
+redis-exec:
 	docker exec -it redis-sb /bin/bash
