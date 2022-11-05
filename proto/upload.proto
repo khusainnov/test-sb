@@ -1,0 +1,79 @@
+syntax = "proto3";
+
+option go_package = "./pb";
+
+import "google/api/annotations.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+
+option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
+  info: {
+    title: "Config Setup Service";
+    version: "1.0";
+    contact: {
+      name: "gRPC-Config Setup Service";
+      url: "https://github.com/khusainnov/sbercloud";
+      email: "khusainnov@gmail.com";
+    };
+  };
+};
+
+service UploadConfigService {
+  rpc UploadConfig(Config) returns (ConfigBodyResponse) {
+    option (google.api.http) = {
+      post: "/v1/config"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "Uploading .json config file";
+      summary: "Adding new version of config";
+    };
+  }
+
+  rpc GetConfig(ConfigName) returns (ConfigBody) {
+    option (google.api.http) = {
+      get: "/v1/config/{service}"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "Sending request with {config_name@version[0-9]}";
+      summary: "Getting config body";
+    };
+  }
+
+  rpc UpdateConfig(Config) returns (ConfigBodyResponse) {
+    option (google.api.http) = {
+      patch: "/v1/config/{service}"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "Updating .json config file";
+      summary: "Update exists version of config";
+    };
+  }
+
+  rpc DeleteConfig(ConfigName) returns (ConfigBodyResponse) {
+    option (google.api.http) = {
+      delete: "/v1/config/{service}"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "Sending request with {config_name@version[0-9]}";
+      summary: "Delete config";
+    };
+  }
+}
+
+message ConfigName {
+  string service = 1;
+}
+
+message ConfigBody {
+  map<string, string> data = 1;
+}
+
+message Config {
+  bytes service = 1;
+  map<string, string> data = 2;
+}
+
+message ConfigBodyResponse {
+  string message = 1;
+}
