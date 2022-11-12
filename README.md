@@ -30,7 +30,7 @@ ___
 }
 ```
 
-* #### Endpoints
+* #### Endpoints for http with port 8080
   **POST:** `/v1/config` – *добавление нового конфига 
   или изменение имеющего файла*
 
@@ -60,3 +60,20 @@ ___
 `curl -X DELETE "http://localhost:8080/v1/config?service=anyCfgName"`
 
 **Response:**```{"code":200,"message":"Deleted"}```
+
+* #### Endpoints for gRPC with port 9090
+
+  ![img_3.png](img_3.png)
+
+  **UploadConfig:** – *добавление нового конфига или
+  изменение имеющегося файла*
+
+  **GetConfig:** – *получение данных из конфига*
+
+  **DeleteConfig:** – *удаление конфигурации*
+
+  ![img.png](img.png)
+
+  ![img_1.png](img_1.png)
+
+  ![img_2.png](img_2.png)
