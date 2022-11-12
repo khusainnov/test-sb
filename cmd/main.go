@@ -7,9 +7,8 @@ import (
 
 	"github.com/joho/godotenv"
 	"github.com/khusainnov/logging"
-	sb "github.com/khusainnov/sbercloud"
+	"github.com/khusainnov/sbercloud"
 	"github.com/khusainnov/sbercloud/driver"
-	"github.com/khusainnov/sbercloud/pkg/handler"
 	"github.com/khusainnov/sbercloud/pkg/repository"
 	"github.com/khusainnov/sbercloud/pkg/service"
 )
@@ -40,15 +39,14 @@ func main() {
 
 	repo := repository.NewRepository(rdb)
 	services := service.NewService(repo)
-	h := handler.NewHandler(services)
 
 	s := sb.Server{}
 
-	logger.Infof("Starting gateway server on port: %s", os.Getenv("GATE_PORT"))
-	go s.RunGatewayServer(os.Getenv("GATE_PORT"), h.InitRoutes())
+	logger.Infof("Starting Gateway server on port:%s", os.Getenv("GATE_PORT"))
+	go s.RunGateway(os.Getenv("GATE_PORT"), services)
 
-	logger.Infof("Starting grpc server on port: %s", os.Getenv("GRPC_PORT"))
-	if err = s.RunGRPCServer(os.Getenv("GRPC_PORT")); err != nil {
-		logger.Fatalf("Error due start the grpc server: %s", err.Error())
+	logger.Infof("Starting gRPC server on port:%s", os.Getenv("GRPC_PORT"))
+	if err = s.RunGRPC(os.Getenv("GRPC_PORT"), services); err != nil {
+		logger.Fatalf("Cannot start the grpc server: %+v", err)
 	}
 }

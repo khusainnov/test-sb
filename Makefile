@@ -1,16 +1,16 @@
-gen:
-	rm -f ./pb/upload/*.go \
+genp:
+	rm -f ./gen/pb/*.go \
     rm -f ./doc/*.swagger.json
 	\
     protoc -I ./proto \
-    --go_out ./pb/ --go_opt paths=source_relative \
-    --go-grpc_out ./pb/ --go-grpc_opt paths=source_relative \
-    --grpc-gateway_out ./pb/ --grpc-gateway_opt paths=source_relative \
+    --go_out ./gen/pb/ --go_opt paths=source_relative \
+    --go-grpc_out ./gen/pb/ --go-grpc_opt paths=source_relative \
+    --grpc-gateway_out ./gen/pb/ --grpc-gateway_opt paths=source_relative \
     --openapiv2_out ./doc --openapiv2_opt=allow_merge=true,merge_file_name=weather \
     ./proto/upload.proto
 
 clean:
-	rm -f ./pb/*.pb.go
+	rm -f ./gen/pb/*.pb.go
 
 up:
 	docker compose --build

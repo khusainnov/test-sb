@@ -5,9 +5,9 @@ import (
 )
 
 type Upload interface {
-	UploadConfig(cfgName string, cfgBody []byte) error
+	UploadConfig(cfgName string, cfgBody []byte) (string, error)
 	GetConfig(cfgName string) ([]byte, error)
-	DeleteConfig(cfgName string) error
+	DeleteConfig(cfgName string) (string, error)
 }
 
 type Repository struct {

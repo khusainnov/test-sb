@@ -22,6 +22,68 @@
   ],
   "paths": {
     "/v1/config": {
+      "get": {
+        "summary": "Getting config body",
+        "description": "Sending request with {config_name@version[0-9]}",
+        "operationId": "UploadConfigService_GetConfig",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/ConfigBody"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "service",
+            "description": "mapped to query URL parameters ?service=\"\"",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "UploadConfigService"
+        ]
+      },
+      "delete": {
+        "summary": "Delete config",
+        "description": "Sending request with {config_name@version[0-9]}",
+        "operationId": "UploadConfigService_DeleteConfig",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/ConfigBodyResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "service",
+            "description": "mapped to query URL parameters ?service=\"\"",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "UploadConfigService"
+        ]
+      },
       "post": {
         "summary": "Adding new version of config",
         "description": "Uploading .json config file",
@@ -56,68 +118,8 @@
       }
     },
     "/v1/config/{service}": {
-      "get": {
-        "summary": "Getting config body",
-        "description": "Sending request with {config_name@version[0-9]}",
-        "operationId": "UploadConfigService_GetConfig",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/ConfigBody"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "service",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "tags": [
-          "UploadConfigService"
-        ]
-      },
-      "delete": {
-        "summary": "Delete config",
-        "description": "Sending request with {config_name@version[0-9]}",
-        "operationId": "UploadConfigService_DeleteConfig",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/ConfigBodyResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "service",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "tags": [
-          "UploadConfigService"
-        ]
-      },
-      "patch": {
-        "summary": "Update exists version of config",
+      "put": {
+        "summary": "Update exists version of config or creates new",
         "description": "Updating .json config file",
         "operationId": "UploadConfigService_UpdateConfig",
         "responses": {
@@ -139,8 +141,7 @@
             "name": "service",
             "in": "path",
             "required": true,
-            "type": "string",
-            "format": "byte"
+            "type": "string"
           },
           {
             "name": "body",
@@ -170,8 +171,7 @@
       "type": "object",
       "properties": {
         "service": {
-          "type": "string",
-          "format": "byte"
+          "type": "string"
         },
         "data": {
           "type": "object",
