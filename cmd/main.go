@@ -9,6 +9,7 @@ import (
 	"github.com/khusainnov/logging"
 	"github.com/khusainnov/sbercloud"
 	"github.com/khusainnov/sbercloud/driver"
+	"github.com/khusainnov/sbercloud/pkg/endpoint"
 	"github.com/khusainnov/sbercloud/pkg/repository"
 	"github.com/khusainnov/sbercloud/pkg/service"
 )
@@ -39,14 +40,13 @@ func main() {
 
 	repo := repository.NewRepository(rdb)
 	services := service.NewService(repo)
-
-	s := sb.Server{}
+	cfgEndoint := endpoint.NewConfigService(services)
 
 	logger.Infof("Starting Gateway server on port:%s", os.Getenv("GATE_PORT"))
-	go s.RunGateway(os.Getenv("GATE_PORT"), services)
+	go sb.RunGateway(os.Getenv("GATE_PORT"), cfgEndoint)
 
 	logger.Infof("Starting gRPC server on port:%s", os.Getenv("GRPC_PORT"))
-	if err = s.RunGRPC(os.Getenv("GRPC_PORT"), services); err != nil {
+	if err = sb.RunGRPC(os.Getenv("GRPC_PORT"), cfgEndoint); err != nil {
 		logger.Fatalf("Cannot start the grpc server: %+v", err)
 	}
 }
